@@ -1,8 +1,7 @@
 // start with these global variables
-const pSymbol="O";
-const cSymbol="X";
+const oSymbol="O";
+const xSymbol="X";
 var xIsNext = true;
-var yIsNext=false;
 var winner = null;
 var squares = Array(9).fill(null);
 var winningLine = Array();
@@ -19,14 +18,15 @@ var lines = [
 
 function init()
 {
-    document.getElementsByName("square")=handleClick;
-    /*
-    var squares=document.querySelectorAll('#square')//query document find all elements with ID square. why this isntead of get elements?
-    for(var i;i<squares.length;i++)
+    //document.getElementsByName("square")=handleClick;   
+    var squares=document.querySelectorAll('.square')//query document find all elements with ID square. why this isntead of get elements?
+    for(var i=0;i<squares.length;i++)
     {
-       squares[i].onclick=handleClick();
+       squares[i].onclick=handleClick;
+       
     }
-    */
+    
+
     // Add an onclick handler to all of the squares
     // The name attribute for all of the divs is square
     // Use the function handleClick to handle the event 
@@ -38,14 +38,26 @@ function handleClick() {
     // Remember that the id is an integer 0 - 8
     var square=this.id;
     // Set the element in the squares array to the player's symbol
-    squares[square]=pSymbol;
+    if(xIsNext==true)
+    {
+        squares[square]=oSymbol;
+        document.getElementById(square).innerHTML=oSymbol;
+        document.getElementById(square).onclick=function(){};
+        document.getElementById("status").innerHTML="Next Player: O";
+        xIsNext=false;
+    }
+    else
+    {
+        squares[square]=xSymbol;
+        document.getElementById(square).innerHTML=xSymbol;
+        document.getElementById(square).onclick=function(){};
+        document.getElementById("status").innerHTML="Next Player: O";
+        xIsNext=true;
+    }
+    
     // Update the inner html for this square in the UI
-    document.getElementById(square).innerHTML(pSymbol);
-    // Set the onclick handler for this square in the UI to an empty anonymous function or arrow function
-    document.getElementById(square).onclick(function(){});
+    // Set the onclick handler for this square in the UI to an empty anonymous function or arrow function 
     // Update the variable xIsNext
-    [xIsNext,yIsNext]=[yIsNext,xIsNext];
-
     // If calculateWinner returns true
     if(calculateWinner()==true)
     {
@@ -77,11 +89,24 @@ function calculateWinner() {
 
 //
 function highlightWinner() {
-
-    for(var index in winningLine)
+    
+    /*
+    for(var index of winningLine)
     {
-        getElementById[index].style.color='red';
+        console.log(index);
+        document.getElementById[index].style.color='red';
     }
+    */
+    for(var i=0;i<winningLine.length;i++)
+    {
+
+        var index=winningLine[i];
+        document.getElementById(index).style.color='red';
+        
+        
+    }
+    
+    document.getElementById("status").innerHTML="Winner is: "+winner;
     // Update the status in the UI to display the winner
     // Iterate through the winningLine array.  It contains the indices of the winning squares
     //      get the next square using the current index in the winningLine array as the id
@@ -93,21 +118,14 @@ function disableAll() {
 
     // Set the onclick handler for all squares to function that does nothing
     // The id of the square is a number 0 - 8
-    var squares=document.querySelectorAll('#square')//query document find all elements with ID square. why this isntead of get elements?
+    console.log("ran disable");
+    var squares=document.querySelectorAll('.square')//query document find all elements with ID square. why this isntead of get elements?
     for(var i;i<squares.length;i++)
     {
+        console.log("ran disable loop");
        squares[i].onclick=function(){};
     }
-}
-
-function isNext()
-{
-    if(xIsNext==ture)
-    {
-        getElementById("Status").innerHTML="Next Player: X";
-    }
-    else
-    getElementById("Status").innerHTML="Next Player: Y";
+    
 }
 window.onload=init;
 // When the page has finished loading, call the function init    

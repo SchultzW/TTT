@@ -25,6 +25,7 @@ function init()
        squares[i].onclick=handleClick;
        
     }
+    document.getElementById('resetBtn').onclick=resetBoard;
     
 
     // Add an onclick handler to all of the squares
@@ -46,7 +47,7 @@ function handleClick() {
         document.getElementById("status").innerHTML="Next Player: O";
         xIsNext=false;
     }
-    else
+    /*else
     {
         squares[square]=xSymbol;
         document.getElementById(square).innerHTML=xSymbol;
@@ -54,7 +55,7 @@ function handleClick() {
         document.getElementById("status").innerHTML="Next Player: O";
         xIsNext=true;
     }
-    
+    */
     // Update the inner html for this square in the UI
     // Set the onclick handler for this square in the UI to an empty anonymous function or arrow function 
     // Update the variable xIsNext
@@ -63,6 +64,16 @@ function handleClick() {
     {
         highlightWinner();
         disableAll();
+    }
+    else if(calculateTie()==true)
+    {
+
+        disableAll();
+        document.getElementById("status").innerHTML="It's a Tie"
+    }
+    else
+    {
+        makeComputerMove();
     }
     // highlight the winner and disable all of the squares
     // otherwise update the status in the UI to display the player
@@ -126,6 +137,61 @@ function disableAll() {
        squares[i].onclick=function(){};
     }
     
+}
+function makeComputerMove()
+{
+    var min=0;
+    var max=9;
+    var random =Math.floor(Math.random() * (+max - +min)) + +min;
+    if(document.getElementById(random).innerHTML!="X"&&document.getElementById(random).innerHTML!="O")
+    {
+        squares[random]=xSymbol;
+        document.getElementById(random).innerHTML=xSymbol;
+        document.getElementById(random).onclick=function(){};
+        document.getElementById("status").innerHTML="Next Player: X";
+        xIsNext=true;
+    }
+    else
+    {
+        makeComputerMove();
+    }
+    calculateTie();
+    if(calculateWinner()==true)
+    {
+        highlightWinner();
+        disableAll();
+    }
+}
+function calculateTie()
+{
+    var count=0;
+    for(var i=0;i<squares.length;i++)
+    {
+      if(document.getElementById(i).innerHTML=='X' ||document.getElementById(i).innerHTML =='O')
+      {
+          count++;
+      }       
+    }
+    if(count==9)
+    {
+        return true;
+    }
+    else return false;
+}
+function resetBoard()
+{
+    squares=[];
+    squares = Array(9).fill(null);
+    xIsNext = true;
+    winningLine=[];
+    for(var i=0;i<squares.length;i++)
+    {
+        document.getElementById(i).innerHTML="&nbsp;";
+        document.getElementById(i).style.color='black';
+    }
+   
+    
+    init();
 }
 window.onload=init;
 // When the page has finished loading, call the function init    

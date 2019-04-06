@@ -1,7 +1,19 @@
 .square {
   border: 2px solid black;
+  width: 25px;
 }  
 
 .red {
   color:red;
+}
+
+.container
+{
+  
+  padding-top:50px; 
+}
+
+.button
+{
+  padding-left:50px;
 }

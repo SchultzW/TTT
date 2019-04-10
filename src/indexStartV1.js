@@ -27,7 +27,7 @@ function init()
     }
     document.getElementById('resetBtn').onclick=resetBoard;
     
-
+    
     // Add an onclick handler to all of the squares
     // The name attribute for all of the divs is square
     // Use the function handleClick to handle the event 
@@ -80,7 +80,8 @@ function handleClick() {
 
 }
 
-function calculateWinner() {
+function calculateWinner() 
+{
     for (var i = 0; i < lines.length; i++) {
         var a = lines[i][0];
         var b = lines[i][1];
